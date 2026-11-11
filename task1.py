@@ -6,7 +6,13 @@ response = requests.get(url)
 
 soup = BeautifulSoup(response.content, 'html.parser')
 
-all_ul = soup.find_all('ul',{'class':'ul__5IxUHb withMetadata__klorrw'})
+all_li = soup.find_all('li',{'class':'listItem__X41oTe'})
+
+for li in all_li:
+    repo_name = li.get('aria-label')
+
+print(repo_name)
+
 
 
 
