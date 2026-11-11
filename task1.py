@@ -1,10 +1,20 @@
 import time
 import requests
+import sqlite3
 from urllib.parse import urljoin
 from bs4 import BeautifulSoup
 
+path = './db/'
+db_name = 'github.sqlite'
+con = sqlite3.connect(path + db_name)
+cur = con.cursor()
+sql_create_table_git = 'CREATE TABLE git(repo_name text , language text,  star_count int);'
+cur.execute(sql_create_table_git)
+con.close()
+
 current_url = 'https://github.com/orgs/google/repositories'
 
+#スクレイピング
 while True:
 
     res = requests.get(current_url)
@@ -20,7 +30,7 @@ while True:
         star = li.find('a',{'class':'IconLabel__xAiop0 prc-Link-Link-9ZwDx'})
 
         repo_name = repo.text if repo else "なし"
-        language_name = language.text.split() if language else "なし"
+        language_name = language.text if language else "なし"
         star_count = star.text if star else "0"
 
         print(repo_name)
