@@ -8,7 +8,7 @@ db_path = 'repo.db'
 con = sqlite3.connect(db_path)
 cur = con.cursor()
 
-# IF NOT EXISTS を付けると、2回目以降の実行でもエラーにならない
+
 cur.execute('''
     CREATE TABLE IF NOT EXISTS repo (
         repo_name TEXT,
