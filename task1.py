@@ -16,10 +16,18 @@ while True:
     for li in all_li:
         time.sleep(1)
         repo = li.find('span')
-        repo_name = repo.text
-        print(repo_name)
+        language = li.find('span',{'class':'PrimaryLanguageName__94OAQO'})
+        star = li.find('a',{'class':'IconLabel__xAiop0 prc-Link-Link-9ZwDx'})
 
-    next_page = soup.find('a',{'class':'prc-Pagination-Page-Etgqf'})
+        repo_name = repo.text if repo else "なし"
+        language_name = language.text.split() if language else "なし"
+        star_count = star.text if star else "0"
+
+        print(repo_name)
+        print(language_name)
+        print(star_count)
+
+    next_page = soup.find('a',rel = 'next')
 
     if not next_page:
         print('終了')
