@@ -4,13 +4,11 @@ import sqlite3
 from urllib.parse import urljoin
 from bs4 import BeautifulSoup
 
-path = './db/'
-db_name = 'github.sqlite'
-con = sqlite3.connect(path + db_name)
+db_path ='repo.db'
+con = sqlite3.connect(db_path)
 cur = con.cursor()
-sql_create_table_git = 'CREATE TABLE git(repo_name text , language text,  star_count int);'
-cur.execute(sql_create_table_git)
-con.close()
+cur.execute('CREATE TABLE repo(repo_name text, language text, star_count);')
+con.commit()
 
 current_url = 'https://github.com/orgs/google/repositories'
 
@@ -37,6 +35,17 @@ while True:
         print(language_name)
         print(star_count)
 
+        cur.execute('''
+    CREATE TABLE IF NOT EXISTS repositories (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        repo_name TEXT NOT NULL UNIQUE,
+        language TEXT,
+        star_count TEXT,
+        scraped_at TEXT DEFAULT CURRENT_TIMESTAMP
+    )
+    ''')
+    con.commit()
+ 
     next_page = soup.find('a',rel = 'next')
 
     if not next_page:
